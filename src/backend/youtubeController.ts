@@ -6,6 +6,8 @@ const url = 'https://www.googleapis.com/youtube/v3/channels'
 
 dotenv.config();
 
+//search channel -> get channel id from snippet -> get other data (thumbnail, statistics) using Channels api
+
 const fetchChannel = async ( req: Request, res : Response) => {
     const handle = req.query.forHandle as string
     const part = req.query.part as string
@@ -16,12 +18,7 @@ const fetchChannel = async ( req: Request, res : Response) => {
         
         const data = (await response.json()) as Root
 
-        res.json({
-            name : data.items.find(snippet => snippet.snippet.title)?.snippet.title,
-            icon : data.items.find(snippet => snippet.snippet.thumbnails.high)?.snippet.thumbnails.high.url,
-            viewCount : data.items.find(snippet => snippet.statistics.viewCount)?.statistics.viewCount,
-            subCount : data.items.find(snippet => snippet.statistics.subscriberCount)?.statistics.subscriberCount
-        })
+        res.json(data)
 
     }catch(error){
         console.log(error)
